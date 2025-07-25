@@ -5,7 +5,6 @@ namespace Infrastructure.Persistence
 {
     public class FutebolDbContext : DbContext
     {
-        public DbContextOptions<FutebolDbContext> Options { get; }
         private readonly IConfiguration _configuration;
 
         public FutebolDbContext(
@@ -15,12 +14,6 @@ namespace Infrastructure.Persistence
             : base(options)
         {
             _configuration = configuration;
-            Options = options;
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(FutebolDbContext).Assembly);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
