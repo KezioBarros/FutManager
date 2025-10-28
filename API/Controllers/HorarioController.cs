@@ -1,4 +1,6 @@
+using System.ComponentModel.DataAnnotations;
 using Application.Commands;
+using Application.Queries.ListarHorarios;
 using Core.Models.InputModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +20,7 @@ namespace API.Controllers
         /// <summary>
         /// Rota responsável por criar um horário que conterá as partidas
         /// </summary>
-        /// <param name="command"></param>
+        /// <param name="inputModel"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CriaNovoHorarioAsync(HorarioInputModel inputModel)
@@ -27,6 +29,26 @@ namespace API.Controllers
             var horario = await _mediator.Send(command);
 
             return Ok(horario);
+        }
+
+        /// <summary>
+        /// Rota para listagem de horários com suporte a paginação e filtros opcionais
+        /// </summary>
+        /// <param name="inputModel"></param>
+        /// <param name="pagina"></param>
+        /// <param name="limite"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> ListarHorariosAsync(
+            [FromQuery] HorarioFiltroInputModel inputModel,
+            [Required] int pagina,
+            [Required] int limite
+        )
+        {
+            var query = new ListarHorariosQuery(inputModel, pagina, limite);
+
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
     }
 }

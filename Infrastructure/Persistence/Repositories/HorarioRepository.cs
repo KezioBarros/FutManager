@@ -1,5 +1,6 @@
 using Core.Interfaces.Repositories;
 using Core.Models.InputModels;
+using Core.Models.ViewModels;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +34,54 @@ namespace Infrastructure.Persistence.Repositories
                         Data,
                     }
                 );
+        }
+
+        public async Task<List<HorarioViewModel?>> ListarHorariosAsync(
+            HorarioFiltroInputModel inputModel,
+            int pagina,
+            int limite
+        )
+        {
+            const string QUERY =
+                @"SELECT 
+                    id, 
+                    criado_por_usuario_id, 
+                    valor, 
+                    horas_contratadas, 
+                    data
+                FROM 
+                    horario
+                WHERE 
+                    (@Id IS NULL OR id = @Id)
+                    AND (@CriadoPorUsuarioId IS NULL OR criado_por_usuario_id = @CriadoPorUsuarioId)
+                    AND (@Valor IS NULL OR valor = @Valor)
+                    AND (@HorasContratadas IS NULL OR horas_contratadas = @HorasContratadas)
+
+                    AND data >= COALESCE(@DataInicio, '1900-01-01'::date)
+                    AND data <= COALESCE(@DataFim, '3000-01-01'::date)
+                ORDER BY 
+                    id
+                LIMIT @limite
+                OFFSET (@pagina - 1) * @limite;";
+
+            return (
+                await _dbContext
+                    .Database.GetDbConnection()
+                    .QueryAsync<HorarioViewModel?>(
+                        QUERY,
+                        new
+                        {
+                            inputModel.Id,
+                            inputModel.CriadoPorUsuarioId,
+                            inputModel.Valor,
+                            inputModel.HorasContratadas,
+                            inputModel.DataInicio,
+                            inputModel.DataFim,
+                            pagina,
+                            limite,
+                        }
+                    )
+            ).ToList();
         }
     }
 }
