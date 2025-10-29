@@ -83,5 +83,30 @@ namespace Infrastructure.Persistence.Repositories
                     )
             ).ToList();
         }
+
+        public async Task EditarHorarioAsync(EditarHorarioInputModel inputModel)
+        {
+            const string SQL =
+                @"UPDATE horario SET valor = @Valor, horas_contratadas = @Horas_contratadas WHERE id = @Id;";
+
+            await _dbContext
+                .Database.GetDbConnection()
+                .ExecuteAsync(
+                    SQL,
+                    new
+                    {
+                        inputModel.Id,
+                        inputModel.Horas_contratadas,
+                        inputModel.Valor,
+                    }
+                );
+        }
+
+        public async Task ExcluirHorarioAsync(int id)
+        {
+            const string SQL = @"DELETE FROM horario WHERE id = @id;";
+
+            await _dbContext.Database.GetDbConnection().ExecuteAsync(SQL, new { id });
+        }
     }
 }

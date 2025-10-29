@@ -11,5 +11,7 @@ namespace Core.Interfaces.Repositories
             int pagina,
             int limite
         );
+        Task EditarHorarioAsync(EditarHorarioInputModel inputModel);
+        Task ExcluirHorarioAsync(int id);
     }
 }

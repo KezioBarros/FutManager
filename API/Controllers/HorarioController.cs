@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Application.Commands;
+using Application.Commands.EditarHorario;
+using Application.Commands.ExcluirHorario;
 using Application.Queries.ListarHorarios;
 using Core.Models.InputModels;
 using MediatR;
@@ -49,6 +51,36 @@ namespace API.Controllers
 
             var result = await _mediator.Send(query);
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Rota responsável por editar horários
+        /// </summary>
+        /// <param name="inputModel"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<IActionResult> EditarHorarioAsync(
+            List<EditarHorarioInputModel> inputModel
+        )
+        {
+            var command = new EditarHorarioCommand(inputModel);
+
+            await _mediator.Send(command);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Rota responsável por excluir horários
+        /// </summary>
+        /// <param name="horarioIds"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public async Task<IActionResult> ExcluirHorarioAsync(List<int> horarioIds)
+        {
+            var command = new ExcluirHorarioCommand(horarioIds);
+
+            await _mediator.Send(command);
+            return Ok();
         }
     }
 }
