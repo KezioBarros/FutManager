@@ -12,6 +12,7 @@ namespace API.Configurations
             services.AddDbContext<FutebolDbContext>();
 
             services.AddScoped<IHorarioRepository, HorarioRepository>();
+            services.AddScoped<IPartidaRepository, PartidaRepository>();
 
             services.AddMediatR(option =>
                 option.RegisterServicesFromAssembly(typeof(CriaNovoHorarioCommand).Assembly)
