@@ -17,7 +17,7 @@ namespace Application.Commands.CriarPartida
             CancellationToken cancellationToken
         )
         {
-            await _partidaRepository.CriarPartidaAsync(request.inputModel);
+            await _partidaRepository.CriarPartidaAsync(request.InputModel);
 
             return Unit.Value;
         }
