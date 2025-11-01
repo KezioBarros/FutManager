@@ -5,11 +5,11 @@ namespace Application.Commands
 {
     public class CriaNovoHorarioCommand : IRequest<Unit>
     {
-        public HorarioInputModel inputModel { get; set; }
+        public HorarioInputModel InputModel { get; set; }
 
         public CriaNovoHorarioCommand(HorarioInputModel inputModel)
         {
-            this.inputModel = inputModel;
+            InputModel = inputModel;
         }
     }
 }

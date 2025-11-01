@@ -1,5 +1,7 @@
+using System.Net;
 using Core.Interfaces.Repositories;
 using MediatR;
+using Shared.Utils;
 
 namespace Application.Commands.EditarPosicaoJogador
 {
@@ -22,6 +24,16 @@ namespace Application.Commands.EditarPosicaoJogador
         {
             foreach (var posicaoJogador in request.InputModel)
             {
+                var posicaoJogadorExiste =
+                    await _posicaoJogadorRepository.PosicaoJogadorExisteAsync(posicaoJogador.Id);
+
+                if (!posicaoJogadorExiste)
+                {
+                    throw new CustomException(
+                        $"A posição informada (ID: {posicaoJogador.Id}) não existe.",
+                        HttpStatusCode.BadRequest
+                    );
+                }
                 await _posicaoJogadorRepository.EditarPosicaoJogadorAsync(posicaoJogador);
             }
 

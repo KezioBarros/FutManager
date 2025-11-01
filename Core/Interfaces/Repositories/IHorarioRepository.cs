@@ -13,5 +13,7 @@ namespace Core.Interfaces.Repositories
         );
         Task EditarHorarioAsync(EditarHorarioInputModel inputModel);
         Task ExcluirHorarioAsync(int id);
+
+        Task<bool> HorarioExisteAsync(int id);
     }
 }

@@ -17,7 +17,7 @@ namespace Application.Commands
             CancellationToken cancellationToken
         )
         {
-            await _horarioRepository.CriaNovoHorarioAsync(request.inputModel, DateTime.Now);
+            await _horarioRepository.CriaNovoHorarioAsync(request.InputModel, DateTime.Now);
             return Unit.Value;
         }
     }

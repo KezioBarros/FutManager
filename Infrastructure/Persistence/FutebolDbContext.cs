@@ -1,5 +1,7 @@
+using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Shared.Utils;
 
 namespace Infrastructure.Persistence
 {
@@ -27,8 +29,9 @@ namespace Infrastructure.Persistence
 
                 if (string.IsNullOrEmpty(connectionString))
                 {
-                    throw new Exception(
-                        "Conexão com o banco de dados do cliente não está configurada"
+                    throw new CustomException(
+                        "Conexão com o banco de dados do cliente não está configurada",
+                        HttpStatusCode.InternalServerError
                     );
                 }
             }
@@ -38,14 +41,18 @@ namespace Infrastructure.Persistence
 
                 if (string.IsNullOrEmpty(connectionString))
                 {
-                    throw new Exception(
-                        "Conexão com o banco de dados do cliente não está configurada"
+                    throw new CustomException(
+                        "Conexão com o banco de dados do cliente não está configurada",
+                        HttpStatusCode.InternalServerError
                     );
                 }
             }
             else
             {
-                throw new InvalidOperationException("Ambiente não configurado corretamente.");
+                throw new CustomException(
+                    "Ambiente não configurado corretamente.",
+                    HttpStatusCode.InternalServerError
+                );
             }
 
             optionsBuilder.UseNpgsql(connectionString);

@@ -1,5 +1,7 @@
+using System.Net;
 using Core.Interfaces.Repositories;
 using MediatR;
+using Shared.Utils;
 
 namespace Application.Commands.ExcluirJogador
 {
@@ -19,6 +21,16 @@ namespace Application.Commands.ExcluirJogador
         {
             foreach (var id in request.Ids)
             {
+                var jogadorExiste = await _JogadorRepository.JogadorExisteAsync(id);
+
+                if (!jogadorExiste)
+                {
+                    throw new CustomException(
+                        $"O jogador {id} não existe. Por favor, insira um jogador válido.",
+                        HttpStatusCode.BadRequest
+                    );
+                }
+
                 await _JogadorRepository.ExcluirJogadorAsync(id);
             }
 

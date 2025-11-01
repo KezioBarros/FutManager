@@ -14,5 +14,7 @@ namespace Core.Interfaces.Repositories
 
         Task EditarJogadorAsync(EditarJogadorInputModel inputModel);
         Task ExcluirJogadorAsync(int id);
+
+        Task<bool> JogadorExisteAsync(int id);
     }
 }

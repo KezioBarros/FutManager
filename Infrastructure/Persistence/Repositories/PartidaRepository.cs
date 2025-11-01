@@ -103,5 +103,15 @@ namespace Infrastructure.Persistence.Repositories
 
             await _dbContext.Database.GetDbConnection().ExecuteAsync(SQL, new { id, horarioId });
         }
+
+        public async Task<bool> PartidaExisteAsync(int id, int horarioId)
+        {
+            const string QUERY =
+                @"SELECT EXISTS (SELECT 1 FROM partida WHERE id = @id AND horario_id = @horarioId) AS existe;";
+
+            return await _dbContext
+                .Database.GetDbConnection()
+                .QueryFirstOrDefaultAsync<bool>(QUERY, new { id, horarioId });
+        }
     }
 }

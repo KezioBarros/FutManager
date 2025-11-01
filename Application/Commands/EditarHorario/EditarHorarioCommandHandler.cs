@@ -1,5 +1,7 @@
+using System.Net;
 using Core.Interfaces.Repositories;
 using MediatR;
+using Shared.Utils;
 
 namespace Application.Commands.EditarHorario
 {
@@ -19,6 +21,15 @@ namespace Application.Commands.EditarHorario
         {
             foreach (var horario in request.InputModel)
             {
+                var horarioExiste = await _horarioRepository.HorarioExisteAsync(horario.Id);
+
+                if (!horarioExiste)
+                {
+                    throw new CustomException(
+                        $"Horário inexistente: {horario.Id}.",
+                        HttpStatusCode.BadRequest
+                    );
+                }
                 await _horarioRepository.EditarHorarioAsync(horario);
             }
 

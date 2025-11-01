@@ -1,5 +1,7 @@
+using System.Net;
 using Core.Interfaces.Repositories;
 using MediatR;
+using Shared.Utils;
 
 namespace Application.Commands.ExcluirPosicaoJogador
 {
@@ -22,6 +24,17 @@ namespace Application.Commands.ExcluirPosicaoJogador
         {
             foreach (var id in request.Ids)
             {
+                var posicaoJogadorExiste =
+                    await _posicaoJogadorRepository.PosicaoJogadorExisteAsync(id);
+
+                if (!posicaoJogadorExiste)
+                {
+                    throw new CustomException(
+                        $"A posição informada (ID: {id}) não existe.",
+                        HttpStatusCode.BadRequest
+                    );
+                }
+
                 await _posicaoJogadorRepository.ExcluirPosicaoJogadorAsync(id);
             }
 

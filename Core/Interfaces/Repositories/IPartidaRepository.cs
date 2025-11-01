@@ -15,5 +15,7 @@ namespace Core.Interfaces.Repositories
 
         Task EditarPartidaAsync(EditarPartidaInputModel inputModel);
         Task ExcluirPartidaAsync(int id, int horarioId);
+
+        Task<bool> PartidaExisteAsync(int id, int horarioId);
     }
 }

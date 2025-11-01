@@ -1,5 +1,7 @@
+using System.Net;
 using Core.Interfaces.Repositories;
 using MediatR;
+using Shared.Utils;
 
 namespace Application.Commands.ExcluirHorario
 {
@@ -19,6 +21,15 @@ namespace Application.Commands.ExcluirHorario
         {
             foreach (var id in request.HorarioIds)
             {
+                var horarioExiste = await _horarioRepository.HorarioExisteAsync(id);
+
+                if (!horarioExiste)
+                {
+                    throw new CustomException(
+                        $"Horário inexistente: {id}.",
+                        HttpStatusCode.BadRequest
+                    );
+                }
                 await _horarioRepository.ExcluirHorarioAsync(id);
             }
 
