@@ -1,16 +1,15 @@
 using API.Configurations;
-using MDA.API.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfiguration();
 builder.Services.AddControllers();
-builder.Services.AddCorsConfiguration();
+builder.Services.AddCorsConfiguration(builder.Configuration);
 builder.Services.AddDependencyInjectionConfiguration();
 
 var app = builder.Build();
-app.UseCors("AllowAnyOrigin");
+app.UseCors("AllowConfiguredOrigins");
 app.UseSwaggerConfiguration();
 app.UseHttpsRedirection();
 app.MapControllers();

@@ -1,26 +1,26 @@
-namespace MDA.API.Configurations;
-
-public static class CorsConfiguration
+namespace API.Configurations
 {
-    public static void AddCorsConfiguration(this IServiceCollection services)
+    public static class CorsConfiguration
     {
-        services.AddCors(options =>
+        public static void AddCorsConfiguration(
+            this IServiceCollection services,
+            IConfiguration configuration
+        )
         {
-            options.AddPolicy(
-                "AllowAnyOrigin",
-                policy =>
-                {
-                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-                }
-            );
+            var allowedOrigins = configuration
+                .GetSection("CorsSettings:AllowedOrigins")
+                .Get<string[]>();
 
-            options.AddPolicy(
-                "AllowOnlyServe",
-                policy =>
-                {
-                    policy.WithOrigins("https://0.0.0.0").AllowAnyHeader().AllowAnyMethod();
-                }
-            );
-        });
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    "AllowConfiguredOrigins",
+                    policy =>
+                    {
+                        policy.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod();
+                    }
+                );
+            });
+        }
     }
 }
