@@ -12,5 +12,8 @@ namespace Core.Interfaces.Repositories
             int pagina,
             int limite
         );
+
+        Task EditarPartidaAsync(EditarPartidaInputModel inputModel);
+        Task ExcluirPartidaAsync(int id, int horarioId);
     }
 }

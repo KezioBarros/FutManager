@@ -10,9 +10,9 @@ namespace Infrastructure.Persistence.Repositories
     {
         private readonly FutebolDbContext _dbContext;
 
-        public PartidaRepository(FutebolDbContext futebolDbContext)
+        public PartidaRepository(FutebolDbContext dbContext)
         {
-            _dbContext = futebolDbContext;
+            _dbContext = dbContext;
         }
 
         public async Task CriarPartidaAsync(PartidaInputModel inputModel)
@@ -75,6 +75,33 @@ namespace Infrastructure.Persistence.Repositories
                         }
                     )
             ).ToList();
+        }
+
+        public async Task EditarPartidaAsync(EditarPartidaInputModel inputModel)
+        {
+            const string SQL =
+                @"UPDATE partida SET tempo = @Tempo, quantidade_jogadores = @QuantidadeJogadores 
+                WHERE id = @Id AND horario_id = @HorarioId;";
+
+            await _dbContext
+                .Database.GetDbConnection()
+                .ExecuteAsync(
+                    SQL,
+                    new
+                    {
+                        inputModel.Id,
+                        inputModel.HorarioId,
+                        inputModel.Tempo,
+                        inputModel.QuantidadeJogadores,
+                    }
+                );
+        }
+
+        public async Task ExcluirPartidaAsync(int id, int horarioId)
+        {
+            const string SQL = @"DELETE FROM partida WHERE id = @id AND horario_id = @horarioId;";
+
+            await _dbContext.Database.GetDbConnection().ExecuteAsync(SQL, new { id, horarioId });
         }
     }
 }
