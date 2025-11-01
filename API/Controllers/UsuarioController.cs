@@ -1,33 +1,33 @@
 using System.ComponentModel.DataAnnotations;
-using Application.Commands.CriarJogador;
-using Application.Commands.EditarJogador;
-using Application.Commands.ExcluirJogador;
-using Application.Querys.ListarJogador;
+using Application.Commands.CriarUsuario;
+using Application.Commands.EditarUsuario;
+using Application.Commands.ExcluirUsuario;
+using Application.Querys.ListarUsuario;
 using Core.Models.InputModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/Jogador")]
-    public class JogadorController : MainController
+    [Route("api/Usuario")]
+    public class UsuarioController : MainController
     {
         private readonly IMediator _mediator;
 
-        public JogadorController(IMediator mediator)
+        public UsuarioController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         /// <summary>
-        /// Rota responsável por criar um Jogador.
+        /// Rota responsável por criar um Usuario.
         /// </summary>
         /// <param name="inputModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> CriarJogadorAsync([FromBody] JogadorInputModel inputModel)
+        public async Task<IActionResult> CriarUsuarioAsync([FromBody] UsuarioInputModel inputModel)
         {
-            var commands = new CriarJogadorCommand(inputModel);
+            var commands = new CriarUsuarioCommand(inputModel);
 
             await _mediator.Send(commands);
 
@@ -35,20 +35,20 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Rota para listagem de Jogadors com suporte a paginação e filtros opcionais
+        /// Rota para listagem de Usuarios com suporte a paginação e filtros opcionais
         /// </summary>
         /// <param name="inputModel"></param>
         /// <param name="pagina"></param>
         /// <param name="limite"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> ListarJogadorAsync(
-            [FromQuery] JogadorFiltroInputModel inputModel,
+        public async Task<IActionResult> ListarUsuarioAsync(
+            [FromQuery] UsuarioFiltroInputModel inputModel,
             [Required] int pagina,
             [Required] int limite
         )
         {
-            var query = new ListarJogadorQuery(inputModel, pagina, limite);
+            var query = new ListarUsuarioQuery(inputModel, pagina, limite);
 
             var result = await _mediator.Send(query);
 
@@ -56,30 +56,30 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Rota responsável por editar Jogador
+        /// Rota responsável por editar Usuario
         /// </summary>
         /// <param name="inputModel"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<IActionResult> EditarJogadorAsync(
-            List<EditarJogadorInputModel> inputModel
+        public async Task<IActionResult> EditarUsuarioAsync(
+            List<EditarUsuarioInputModel> inputModel
         )
         {
-            var command = new EditarJogadorCommand(inputModel);
+            var command = new EditarUsuarioCommand(inputModel);
 
             await _mediator.Send(command);
             return Ok();
         }
 
         /// <summary>
-        /// Rota responsável por excluir Jogador
+        /// Rota responsável por excluir Usuario
         /// </summary>
         /// <param name="inputModels"></param>
         /// <returns></returns>
         [HttpDelete]
-        public async Task<IActionResult> ExcluirJogadorAsync(List<int> inputModels)
+        public async Task<IActionResult> ExcluirUsuarioAsync(List<int> inputModels)
         {
-            var command = new ExcluirJogadorCommand(inputModels);
+            var command = new ExcluirUsuarioCommand(inputModels);
 
             await _mediator.Send(command);
             return Ok();
