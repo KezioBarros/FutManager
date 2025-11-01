@@ -13,6 +13,7 @@ namespace API.Configurations
 
             services.AddScoped<IHorarioRepository, HorarioRepository>();
             services.AddScoped<IPartidaRepository, PartidaRepository>();
+            services.AddScoped<IPosicaoJogadorRepository, PosicaoJogadorRepository>();
 
             services.AddMediatR(option =>
                 option.RegisterServicesFromAssembly(typeof(CriaNovoHorarioCommand).Assembly)
