@@ -106,5 +106,19 @@ namespace Infrastructure.Persistence.Repositories
                 .Database.GetDbConnection()
                 .QueryFirstOrDefaultAsync<bool>(QUERY, new { id });
         }
+
+        public async Task<UsuarioAutenticacaoViewModel?> ObterUsuarioParaAutenticacaoAsync(int id)
+        {
+            const string QUERY =
+                @"SELECT 
+                id AS Id,
+                senha AS ""Senha"", 
+                tipo_usuario_id AS ""TipoUsuarioId""
+                FROM usuario WHERE id = @id";
+
+            return await _dbContext
+                .Database.GetDbConnection()
+                .QueryFirstOrDefaultAsync<UsuarioAutenticacaoViewModel?>(QUERY, new { id });
+        }
     }
 }

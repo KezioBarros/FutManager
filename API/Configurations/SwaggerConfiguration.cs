@@ -14,6 +14,7 @@ namespace API.Configurations
             {
                 ConfigureSwaggerDoc(options);
                 ConfigureXmlComments(options);
+                AddSwaggerJwtHeaderAuthorizationService(options);
             });
         }
 
@@ -23,7 +24,7 @@ namespace API.Configurations
                 "v1",
                 new OpenApiInfo
                 {
-                    Title = "FUTEBOL - API",
+                    Title = "FutManager - API",
                     Version = "v1",
                     Description =
                         "API para gerenciamento de horários e usuários do sistema Futebol.",
@@ -51,6 +52,38 @@ namespace API.Configurations
 
             foreach (var xml in xmlFiles)
                 options.IncludeXmlComments(xml);
+        }
+
+        private static void AddSwaggerJwtHeaderAuthorizationService(SwaggerGenOptions x)
+        {
+            x.AddSecurityDefinition(
+                "Bearer",
+                new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    In = ParameterLocation.Header,
+                    Description = "Bearer Authorization Header",
+                }
+            );
+
+            x.AddSecurityRequirement(
+                new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer",
+                            },
+                        },
+                        Array.Empty<string>()
+                    },
+                }
+            );
         }
 
         public static void UseSwaggerConfiguration(this WebApplication app)

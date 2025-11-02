@@ -16,5 +16,7 @@ namespace Core.Interfaces.Repositories
         Task ExcluirUsuarioAsync(int id);
 
         Task<bool> UsuarioExisteAsync(int id);
+
+        Task<UsuarioAutenticacaoViewModel?> ObterUsuarioParaAutenticacaoAsync(int id);
     }
 }

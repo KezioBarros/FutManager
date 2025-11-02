@@ -1,6 +1,7 @@
 using Application.Commands;
 using Application.Services;
 using Core.Interfaces.Repositories;
+using Core.Interfaces.Services;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 
@@ -19,6 +20,7 @@ namespace API.Configurations
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
             services.AddScoped<ICryptoService, CryptoService>();
+            services.AddScoped<ITokenService, TokenService>();
 
             services.AddMediatR(option =>
                 option.RegisterServicesFromAssembly(typeof(CriaNovoHorarioCommand).Assembly)
