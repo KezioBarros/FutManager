@@ -1,5 +1,6 @@
 using System.Net;
 using Core.Interfaces.Repositories;
+using Core.Interfaces.Services;
 using MediatR;
 using Shared.Utils;
 
@@ -8,10 +9,15 @@ namespace Application.Commands.EditarUsuario
     public class EditarUsuarioCommandHandler : IRequestHandler<EditarUsuarioCommand, Unit>
     {
         private readonly IUsuarioRepository _UsuarioRepository;
+        private readonly ITokenService _tokenService;
 
-        public EditarUsuarioCommandHandler(IUsuarioRepository UsuarioRepository)
+        public EditarUsuarioCommandHandler(
+            IUsuarioRepository UsuarioRepository,
+            ITokenService tokenService
+        )
         {
             _UsuarioRepository = UsuarioRepository;
+            _tokenService = tokenService;
         }
 
         public async Task<Unit> Handle(
@@ -21,6 +27,17 @@ namespace Application.Commands.EditarUsuario
         {
             foreach (var Usuario in request.InputModel)
             {
+                if (Usuario.Id.ToString() != _tokenService.GetUsuarioId())
+                {
+                    if (_tokenService.GetTipoUsuarioId() != "1")
+                    {
+                        throw new CustomException(
+                            $"Você não tem permissão para editar o usuário {Usuario.Id}.",
+                            HttpStatusCode.Forbidden
+                        );
+                    }
+                }
+
                 var UsuarioExiste = await _UsuarioRepository.UsuarioExisteAsync(Usuario.Id);
 
                 if (!UsuarioExiste)

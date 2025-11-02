@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Core.Interfaces.Services;
 using Core.Models.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -12,10 +13,12 @@ namespace Application.Services
         private const int DURACAO_DO_TOKEN_DE_ACESSO_EM_HORAS = 4;
         private readonly JwtSecurityTokenHandler _jwtHandler = new();
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TokenService(IConfiguration configuration)
+        public TokenService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public string Gerar(TokenClaimsViewModel tokenClaims)
@@ -44,6 +47,21 @@ namespace Application.Services
             var token = _jwtHandler.CreateToken(tokenDescriptor);
 
             return _jwtHandler.WriteToken(token);
+        }
+
+        public string? GetClaim(string claimType)
+        {
+            return _httpContextAccessor.HttpContext?.User?.FindFirst(claimType)?.Value;
+        }
+
+        public string? GetTipoUsuarioId()
+        {
+            return GetClaim("TipoUsuarioId");
+        }
+
+        public string? GetUsuarioId()
+        {
+            return GetClaim("Id");
         }
     }
 }
