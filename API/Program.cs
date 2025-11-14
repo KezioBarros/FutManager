@@ -1,5 +1,5 @@
 using API.Configurations;
-using Shared.Utils;
+using API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +17,7 @@ app.UseSwaggerConfiguration();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseGlobalException();
 app.MapControllers();
 
 app.Run();
