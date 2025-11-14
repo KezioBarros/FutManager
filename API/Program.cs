@@ -7,7 +7,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfiguration();
 builder.Services.AddControllers();
 builder.Services.AddCorsConfiguration(builder.Configuration);
-builder.Services.AddDependencyInjectionConfiguration();
+builder.Services.AddDependencyInjectionConfiguration(builder.Configuration);
 builder.Services.AddJwtAuthenticationConfiguration(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 

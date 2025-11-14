@@ -2,16 +2,18 @@ using Application.Commands;
 using Application.Services;
 using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
-using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 
 namespace API.Configurations
 {
     public static class DependencyInjectionConfiguration
     {
-        public static void AddDependencyInjectionConfiguration(this IServiceCollection services)
+        public static void AddDependencyInjectionConfiguration(
+            this IServiceCollection services,
+            IConfiguration configuration
+        )
         {
-            services.AddDbContext<FutebolDbContext>();
+            services.AddDbContextConfiguration(configuration);
 
             services.AddScoped<IHorarioRepository, HorarioRepository>();
             services.AddScoped<IPartidaRepository, PartidaRepository>();

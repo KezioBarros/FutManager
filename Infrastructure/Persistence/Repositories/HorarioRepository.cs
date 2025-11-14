@@ -8,9 +8,9 @@ namespace Infrastructure.Persistence.Repositories
 {
     public class HorarioRepository : IHorarioRepository
     {
-        private readonly FutebolDbContext _dbContext;
+        private readonly FutManagerDbContext _dbContext;
 
-        public HorarioRepository(FutebolDbContext dbContext)
+        public HorarioRepository(FutManagerDbContext dbContext)
         {
             _dbContext = dbContext;
         }

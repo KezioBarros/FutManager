@@ -8,9 +8,9 @@ namespace Infrastructure.Persistence.Repositories
 {
     public class PartidaRepository : IPartidaRepository
     {
-        private readonly FutebolDbContext _dbContext;
+        private readonly FutManagerDbContext _dbContext;
 
-        public PartidaRepository(FutebolDbContext dbContext)
+        public PartidaRepository(FutManagerDbContext dbContext)
         {
             _dbContext = dbContext;
         }
